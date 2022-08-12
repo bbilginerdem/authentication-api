@@ -1,4 +1,7 @@
+// Due to Node's single-threaded event-loop, it's highly recommended that sending, alert triggering, 
+// reformatting and all forms of log processing be conducted in a separate process or thread
 import logger from 'pino'
+// to format day & time
 import dayjs from 'dayjs'
 import config from 'config'
 

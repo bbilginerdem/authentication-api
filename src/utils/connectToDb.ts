@@ -3,6 +3,7 @@ import config from 'config'
 import log from './logger'
 
 async function connectToDb() {
+  // config.get takes a generic, here defined as string
   const dbUri = config.get<string>('dbUri')
 
   try {
