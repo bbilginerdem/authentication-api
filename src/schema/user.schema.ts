@@ -24,7 +24,25 @@ export const createUserSchema = object({
 });
 
 export const verifyUserSchema = object({
-  part
+  params: object({
+    id: string(),
+    verificationCode: string(),
+  })
 })
 
+export const forgotPasswordSchema = object({
+  body: object({
+    email: string({
+      required_error: 'Email is required',
+    }).email("Not a valid email address"),
+  })
+})
+
+
+
+//since it is type, we use capital letters in the beginning of the name
 export type CreateUserInput = TypeOf<typeof createUserSchema>['body'];
+
+export type VerifyUserInput = TypeOf<typeof verifyUserSchema>['params'];
+
+export type ForgotPasswordInput = TypeOf<typeof forgotPasswordSchema>['body'];
