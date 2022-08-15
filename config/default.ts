@@ -3,6 +3,8 @@ export default {
   // database connection
   dbUri: 'mongodb://localhost:27017/user-api',
   logLevel: 'info',
+  accessTokenPrivateKey: '',
+  refreshTokenPrivateKey: '',
   smtp: {
     user: 'zgmixwkbzszbrk3n@ethereal.email',
     pass: 'XvbV4D2SC483vbz7uV',
