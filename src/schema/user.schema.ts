@@ -21,6 +21,10 @@ export const createUserSchema = object({
     message: 'Password and password confirmation must match',
     path: ['passwordConfirmation']
   })
+});
+
+export const verifyUserSchema = object({
+  part
 })
 
 export type CreateUserInput = TypeOf<typeof createUserSchema>['body'];
