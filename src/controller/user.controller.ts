@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CreateUserInput, ForgotPasswordInput, VerifyUserInput } from "../schema/user.schema";
+import { CreateUserInput, ForgotPasswordInput, ResetPasswordInput, VerifyUserInput } from "../schema/user.schema";
 import { createUser, findUserByEmail, findUserById } from "../service/user.service";
 import log from "../utils/logger";
 import { nanoid } from "nanoid";
@@ -88,4 +88,26 @@ export async function forgotPasswordHandler(req: Request<{}, {}, ForgotPasswordI
   log.debug(`Password reset email sent to ${email}`)
 
   return res.send(message);
+}
+
+export async function resetPasswordHandler(req: Request<ResetPasswordInput['params'], {}, ResetPasswordInput['body']>, res: Response) {
+  const { id, passwordResetCode } = req.params
+
+  const { password } = req.body
+
+  const user = findUserById(id)
+
+  // if  user is not register, or passwordResetCode is null, or that the reset code doesn't match return error
+  if (!user || !user.passwordResetCode || user.passwordResetCode !== passwordResetCode) {
+    return res.status(400).send('Could not reset user password')
+  }
+
+  user.passwordResetCode = null
+
+  // since in user.model.ts, we have presave hook, we don't need to hash the password
+  user.password = password
+
+  await user.save()
+
+  return res.send('Successfully updated the password')
 }
