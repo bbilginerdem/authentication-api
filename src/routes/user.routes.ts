@@ -1,5 +1,6 @@
 import express from 'express';
 import { createUserHandler, forgotPasswordHandler, getCurrentUserHandler, resetPasswordHandler, verifyUserHandler } from '../controller/user.controller';
+import requireUser from '../middleware/requireUser';
 import validateResource from '../middleware/validateResource';
 import { createUserSchema, forgotPasswordSchema, resetPasswordSchema, verifyUserSchema } from '../schema/user.schema';
 
@@ -14,6 +15,6 @@ router.post("/api/users/forgot-password", validateResource(forgotPasswordSchema)
 
 router.post("/api/users/resetpassword/:id/:passwordResetCode", validateResource(resetPasswordSchema), resetPasswordHandler)
 
-router.get('/api/users/me', getCurrentUserHandler)
+router.get('/api/users/me', requireUser, getCurrentUserHandler)
 
 export default router;
