@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { get } from 'lodash';
 import { CreateSessionInput } from '../schema/auth.schema';
 import { signAccessToken, signRefreshToken } from '../service/auth.service';
 import { findUserByEmail } from '../service/user.service';
@@ -36,4 +37,16 @@ export async function createSessionHandler(req: Request<{}, {}, CreateSessionInp
     accessToken,
     refreshToken,
   })
+}
+
+export async function refreshAccessTokenHandler(req: Request, res: Response) {
+  const refreshToken = get(req, 'headers.x-refresh')
+
+  const decoded = verifyJwt(refreshToken, "refreshTokenPublicKey")
+
+  if (!decoded) {
+    return res.status(401).send("Could not refresh access token")
+  }
+
+  const session = await findSessionById()
 }

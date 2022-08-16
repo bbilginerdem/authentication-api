@@ -4,6 +4,16 @@ import { nanoid } from "nanoid";
 import argon2 from 'argon2';
 import log from "../utils/logger";
 
+
+// when we sign jwt, we want to remove these fields from the user
+export const privateFields = [
+  'password',
+  '__v',
+  'verificationCode',
+  'passwordResetCode',
+  'verified',
+]
+
 // User class set for pre to get type validations
 @pre<User>("save", async function () {
   if (!this.isModified('Password')) {
@@ -18,7 +28,7 @@ import log from "../utils/logger";
 
   return;
 })
-@index({ email: 1})
+@index({ email: 1 })
 @modelOptions({
   schemaOptions: {
     timestamps: true,
